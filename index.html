@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUerrero de Critos |Jovenes Cristianos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;600;700;900&family=Montserrat:wght@400;600;700;800;900&family=Orbitron:wght@400;700;900&family=Righteous&family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <header class="relative flex flex-col gap-6">
+            <nav class="bg-black bg-opacity-50 p-4">
+                <div class="container mx-auto flex justify-between items-center">
+                    <img src="imagenes/logo.png" alt="Logo" class="h-30 w-30" />
+                    <p class="text-[#F5BE27] font-bold text-2xl"> GUERREROS DE CRISTO</p>+
+                    <ul class="nav-menu" id="navMenu">
+                        <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                        <li><a href="#nosotros" class="nav-link">Nosotros</a></li>
+                        <li><a href="#servicios" class="nav-link">Servicios</a></li>
+                        <li><a href="#galeria" class="nav-link">Galería</a></li>
+                        <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- HERO SECTION -->
+            <section id="inicio" class="hero">
+                <div class="video-container">
+                    <video id="videoFondo" class="video-bg" autoplay muted playsinline loop preload="auto">
+                        <source src="./video/fondo.mp4" type="video/mp4">
+                        Tu navegador no soporta video en background.
+                    </video>
+                    <div class="video-overlay"></div>
+                </div>
+
+                <div class="hero-content">
+                    <!-- COLUMNA IZQUIERDA: CONTENIDO -->
+                    <div class="hero-left">
+
+                        <h1>GUERREROS DE CRISTO</h1>
+                        <p class="hero-subtitle">Jóvenes cristianos comprometidos con excelencia y servicio</p>
+                        <div class="hero-buttons">
+                            <img src="imagenes/guerrerostodos.jpg" alt="Logo" class="hero-logo" />
+                            <button class="btn btn-primary"
+                                onclick="document.getElementById('servicios').scrollIntoView({behavior: 'smooth'})">
+                                Conoce Nuestros Servicios
+                            </button>
+                            <a class="btn btn-secondary" href="https://wa.me/+51993790722" target="_blank">Contáctanos</a>
+
+                        </div>
+                    </div>
+
+                    <!-- COLUMNA DERECHA: VIDEO CON CHROMA KEY -->
+                    <div class="hero-right">
+                        <div class="video-wrapper">
+                            <video id="videoGuerreros" style="display: none;" src="video/GUERREROS.mp4" autoplay muted playsinline loop></video>
+                            <canvas id="canvasGuerreros" class="canvas-video"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NOSOTROS SECTION -->
+            <section id="nosotros" class="nosotros">
+                <div class="container">
+                    <h2 class="section-title">Quiénes Somos</h2>
+                    <div class="nosotros-content">
+                        <div class="nosotros-text">
+                            <h3>Una Comunidad de Jóvenes Cristianos</h3>
+                            <p>
+                                Somos un grupo de jóvenes cristianos comprometidos con los valores de la fe, el servicio
+                                y la
+                                excelencia.
+                                Con <strong>2 años de trayectoria</strong>, hemos marcado la diferencia en nuestra
+                                comunidad a
+                                través de
+                                nuestros servicios profesionales y nuestro compromiso con la calidad.
+                            </p>
+                            <p>
+                                Nuestra misión es servir con integridad, demostrar que la fe y la profesionalidad van de
+                                la
+                                mano,
+                                y crear momentos memorables para cada cliente que confía en nosotros.
+                            </p>
+                            <div class="nosotros-container">
+                                <img src="imagenes/grupo.jpg" alt="Nosotros" class="nosotros-image" />
+                            </div>
+                        </div>
+                        <div class="nosotros-stats">
+                            <div class="stat-card">
+                                <div class="stat-number">2</div>
+                                <div class="stat-label">Años de Trayectoria</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">500+</div>
+                                <div class="stat-label">Eventos Realizados</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">Satisfacción</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SERVICIOS SECTION -->
+        <section id="servicios" class="servicios section-padding">
+            <div class="container">
+                <h2 class="section-title text-center">Nuestros Servicios</h2>
+        
+                <div class="servicios-grid">
+        
+                    <div class="servicio-card custom-shadow">
+                        <div class="servicio-header">
+                            <div class="servicio-icon icon-primary">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
+                            <h3 class="card-title">Escolta de Honor</h3>
+                        </div>
+        
+                        <div class="image-container">
+                            <img src="imagenes/escolta.jpg" alt="Escolta de Honor" class="servicio-image" />
+                        </div>
+        
+                        <p class="card-description">Cadetes profesionales para cubrir tus eventos especiales con **elegancia y
+                            solemnidad**.</p>
+        
+                        <div class="servicio-items-list">
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Matrimonios</span>
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Quince años</span>
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Cumpleaños</span>
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Eventos corporativos</span>
+                        </div>
+                    </div>
+        
+                    <div class="servicio-card custom-shadow">
+                        <div class="servicio-header">
+                            <div class="servicio-icon icon-secondary">
+                                <i class="fas fa-video fa-2x"></i>
+                            </div>
+                            <h3 class="card-title">Transmisiones en Vivo</h3>
+                        </div>
+        
+                        <div class="image-container">
+                            <img src="imagenes/productora.jpg" alt="Transmisiones en Vivo" class="servicio-image" />
+                        </div>
+        
+                        <p class="card-description">Cobertura profesional y en tiempo real de tus celebraciones religiosas.</p>
+        
+                        <div class="servicio-items-list">
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Gracias y celebraciones</span>
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Servicios religiosos</span>
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Multiplatforma</span>
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Calidad 4K</span>
+                        </div>
+                    </div>
+        
+                    <div class="servicio-card custom-shadow">
+                        <div class="servicio-header">
+                            <div class="servicio-icon icon-tertiary">
+                                <i class="fas fa-film fa-2x"></i>
+                            </div>
+                            <h3 class="card-title">Productora Audiovisual</h3>
+                        </div>
+        
+                        <div class="image-container">
+                            <img src="imagenes/filmacion.jpg" alt="Productora Audiovisual" class="servicio-image" />
+                        </div>
+        
+                        <p class="card-description">Videoclips, ediciones profesionales y contenido audiovisual de **alta
+                            calidad**.</p>
+        
+                        <div class="servicio-items-list">
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Videoclips musicales</span>
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Edición profesional</span>
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Motion graphics</span>
+                            <span class="item"><i class="fas fa-check-circle check-icon"></i> Contenido digital</span>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </section>
+
+            <!-- GALERÍA SECTION -->
+            <section id="galeria" class="galeria">
+                <div class="container">
+                    <h2 class="section-title">Galería de Momentos</h2>
+                    <div class="galeria-grid">
+                        <div class="galeria-item" style="background-image: url('imagenes/escolta1.jpg');">
+                            <div class="galeria-overlay">
+                                <p class=" text-xl text-black text-bold">Escolta de Honor</p>
+                            </div>
+                        </div>
+                        <div class="galeria-item" style="background-image: url('imagenes/jl.jpg');">
+                            <div class="galeria-overlay">
+                                <p class=" text-xl text-white text-bold">Transmisión en Vivo</p>
+                            </div>
+                        </div>
+                        <div class="galeria-item" style="background-image: url('imagenes/boda.jpg');">
+                            <div class="galeria-overlay">
+                                <p class=" text-xl text-white text-bold">Matrimonios</p>
+                            </div>
+                        </div>
+                        <div class="galeria-item" style="background-image: url('imagenes/videoclip.jpg');">
+                            <div class="galeria-overlay">
+                                <p>Videoclip</p>
+                            </div>
+                        </div>
+                        <div class="galeria-item" style="background-image: url('imagenes/eventoEespecial.jpg');">
+                            <div class="galeria-overlay">
+                                <p>Obras de Caridad</p>
+                            </div>
+                        </div>
+                        <div class="galeria-item" style="background-image: url('imagenes/15.jpg');">
+                            <div class="galeria-overlay">
+                                <p>15 años</p>
+                            </div>
+                        </div>
+                        <div class="galeria-item" style="background-image: url('imagenes/productora1.jpg');">
+                            <div class="galeria-overlay">
+                                <p>Producción</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TESTIMONIOS SECTION -->
+            <section class="testimonios">
+                <div class="container">
+                    <h2 class="section-title">Lo Que Nuestros Clientes Dicen</h2>
+                    <div class="testimonios-grid">
+                        <div class="testimonio-card">
+                            <div class="testimonios-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="testimonio-texto">
+                                "Excelente servicio de escolta para nuestro matrimonio. ¡Profesionales, puntuales y muy
+                                atentos!
+                                Recomendamos ampliamente a Guerreros de Cristo."
+                            </p>
+                            <p class="testimonio-autor"><strong>- Andrea & Carlos</strong></p>
+                        </div>
+                        <div class="testimonio-card">
+                            <div class="testimonios-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="testimonio-texto">
+                                "Las transmisiones en vivo de la iglesia son de primera calidad. ¡El equipo técnico es
+                                muy
+                                profesional
+                                y se nota el compromiso con el trabajo!"
+                            </p>
+                            <p class="testimonio-autor"><strong>- Pastor Juan</strong></p>
+                        </div>
+                        <div class="testimonio-card">
+                            <div class="testimonios-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="testimonio-texto">
+                                "El videoclip que hicieron fue espectacular. Edición, música, concepto... ¡Todo
+                                perfecto!
+                                Definitivamente volveremos a trabajar con ellos."
+                            </p>
+                            <p class="testimonio-autor"><strong>- Marco Rodríguez</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACTO SECTION -->
+            <section id="contacto" class="contacto">
+                <div class="container items-center">
+                    <h2 class="section-title">Contáctanos</h2>
+                    <div class="contacto-content">
+                        <div class="contacto-info">
+                            <div class="info-card">
+                                <i class="fas fa-phone"></i>
+                                <h4>Teléfono</h4>
+                                <p>+51 993 790 722</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fab fa-whatsapp"></i>
+                                <h4>WhatsApp</h4>
+                                <p>+51 993 790 722</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fab fa-facebook-f"></i>
+                                <h4>Facebook</h4>
+                                <p>Guerreros de Cristo</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fab fa-tiktok"></i>
+                                <h4>TikTok</h4>
+                                <p>Guerreros.dc</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fab fa-youtube"></i>
+                                <h4>YouTube</h4>
+                                <p>GC</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h4>Ubicación</h4>
+                                <p>, Baños del Inka - Cajamarcas</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fas fa-clock"></i>
+                                <h4>Horario</h4>
+                                <p>Lun - Sab: 9:00 AM - 6:00 PM</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- REDES SOCIALES FLOTANTES -->
+            <div class="social-floating">
+                <a href="https://www.facebook.com/share/1JYsYcG181" target="_blank" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.tiktok.com/@guerreros.dc?_t=ZS-90Rl6P4bLqj&_r=1" target="_blank" title="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/UCB3gQ1sKj3gfNt4Eg9BmvyQ" target="_blank" title="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://wa.me/+51993790722" target="_blank" title="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="footer">
+                <div class="container">
+                    <div class="footer-content">
+                        <div class="footer-section">
+                            <h4>Guerreros de Fe</h4>
+                            <p>Jóvenes cristianos comprometidos con la excelencia y el servicio.</p>
+                        </div>
+                        <div class="footer-section">
+                            <h4>Enlaces Rápidos</h4>
+                            <ul>
+                                <li><a href="#inicio">Inicio</a></li>
+                                <li><a href="#nosotros">Nosotros</a></li>
+                                <li><a href="#servicios">Servicios</a></li>
+                                <li><a href="#galeria">Galería</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-section">
+                            <h4>Síguenos</h4>
+                            <div class="footer-socials">
+                                <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2025 Guerreros de Fe. Todos los derechos reservados.</p>
+                    </div>
+                </div>
+            </footer>
+
+            <script src="./js/video-fondo.js"></script>
+            <script src="./js/chroma-key.js"></script>
+</body>
+
+</html>
