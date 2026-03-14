@@ -21,14 +21,14 @@ if (video) {
 }
 
 const CHROMA_KEY = {
-    hueMin: 60,
-    hueMax: 170,
-    satMin: 0.2,
+    hueMin: 50,      // Más amplio
+    hueMax: 180,     // Más amplio
+    satMin: 0.1,     // Más bajo para captar verdes desaturados
     satMax: 1.0,
-    valMin: 0.2,
+    valMin: 0.1,     // Más bajo para captar verdes oscuros
     valMax: 1.0,
-    threshold: 0.4,
-    smoothing: 0.1
+    threshold: 0.2,  // Mucho más bajo
+    smoothing: 0.05
 };
 
 function resizeCanvas() {
@@ -78,7 +78,18 @@ function chromaKey(imageData) {
         const r = data[i];
         const g = data[i + 1];
         const b = data[i + 2];
+        const a = data[i + 3];
 
+        // Método 1: Si el verde es mucho más alto que rojo y azul
+        const isGreenDominated = g > r * 1.3 && g > b * 1.3;
+        
+        if (isGreenDominated) {
+            // Remover pixel verde
+            data[i + 3] = 0;
+            continue;
+        }
+
+        // Método 2: Chroma key clásico HSV
         const hsv = rgbToHsv(r, g, b);
 
         const isInHueRange = hsv.h >= CHROMA_KEY.hueMin && hsv.h <= CHROMA_KEY.hueMax;
@@ -97,12 +108,13 @@ function chromaKey(imageData) {
             }
         }
 
+        // Corregir exceso de verde en píxeles que quedan
         if (data[i + 3] > 0) {
             const avgRB = (r + b) / 2;
             const greenExcess = g - avgRB;
 
-            if (greenExcess > 5) {
-                const correction = Math.min(greenExcess * 0.8, g - avgRB);
+            if (greenExcess > 3) {
+                const correction = Math.min(greenExcess * 0.9, g - avgRB);
                 data[i + 1] = Math.max(0, Math.floor(g - correction));
 
                 const boost = correction * 0.15;
@@ -163,9 +175,16 @@ function init() {
     // Iniciar procesamiento de frames independientemente de si se reproduce
     setTimeout(() => {
         console.log('🎬 Iniciando renderizado del canvas...');
+        console.log('💡 En Render, ajusta así si ves verde:');
+        console.log('   window.CHROMA_KEY.threshold = 0.15');
+        console.log('   window.CHROMA_KEY.hueMax = 160');
         processFrame();
     }, 500);
 }
+
+// Exponer CHROMA_KEY globalmente para debugging en Render
+window.CHROMA_KEY = CHROMA_KEY;
+console.log('⚙️ Parámetros Chroma Key expuestos en window.CHROMA_KEY');
 
 // Event listeners
 if (video) {
