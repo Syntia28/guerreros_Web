@@ -4,35 +4,20 @@ const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
 let animationId = null;
 let isProcessing = false;
-let isVideoReady = false;
 
-// Obtener la URL base correcta para Render
-const getVideoPath = () => {
+// Configurar ruta del video según ambiente
+const videoPath = (() => {
     const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-    if (isProduction) {
-        return '/video/GUERREROS.mp4';
-    }
-    return 'video/GUERREROS.mp4';
-};
+    return isProduction ? '/video/GUERREROS.mp4' : 'video/GUERREROS.mp4';
+})();
 
-// Verificar si existen los elementos
-if (!video || !canvas) {
-    console.error('❌ Elementos críticos no encontrados:', { video: !!video, canvas: !!canvas });
-} else {
-    console.log('✅ Elementos videoGuerreros y canvasGuerreros encontrados');
-
-    // Configurar ruta del video en el elemento source
+if (video) {
     const videoSource = video.querySelector('source');
-    const videoPath = getVideoPath();
-    
     if (videoSource) {
         videoSource.src = videoPath;
-        console.log('Ruta GUERREROS configurada en source:', videoPath);
-    } else {
-        // Fallback: establecer directamente en el video
-        video.src = videoPath;
-        console.log('Ruta GUERREROS configurada directamente en video:', videoPath);
     }
+    video.src = videoPath;
+    console.log('📹 Video path:', videoPath);
 }
 
 const CHROMA_KEY = {
@@ -47,18 +32,16 @@ const CHROMA_KEY = {
 };
 
 function resizeCanvas() {
+    if (!canvas) return;
+    
     const rect = canvas.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
 
-    // Establecer tamaño CSS (lo que ve el usuario)
     canvas.style.width = rect.width + 'px';
     canvas.style.height = rect.height + 'px';
-
-    // Establecer tamaño real del canvas (para alta resolución)
     canvas.width = Math.round(rect.width * dpr);
     canvas.height = Math.round(rect.height * dpr);
 
-    // Escalar el contexto para mantener las coordenadas en el rango esperado
     ctx.scale(dpr, dpr);
 }
 
@@ -90,8 +73,6 @@ function rgbToHsv(r, g, b) {
 
 function chromaKey(imageData) {
     const data = imageData.data;
-    const width = imageData.width;
-    const height = imageData.height;
 
     for (let i = 0; i < data.length; i += 4) {
         const r = data[i];
@@ -105,11 +86,7 @@ function chromaKey(imageData) {
         const isInValRange = hsv.v >= CHROMA_KEY.valMin && hsv.v <= CHROMA_KEY.valMax;
 
         if (isInHueRange && isInSatRange && isInValRange) {
-            const hueDist = Math.min(
-                Math.abs(hsv.h - 120) / 60,
-                1
-            );
-
+            const hueDist = Math.min(Math.abs(hsv.h - 120) / 60, 1);
             const greenness = (1 - hueDist) * hsv.s * hsv.v;
 
             if (greenness > CHROMA_KEY.threshold) {
@@ -139,7 +116,8 @@ function chromaKey(imageData) {
 }
 
 function processFrame() {
-    if (video.paused || video.ended || isProcessing) {
+    if (!video || !canvas || isProcessing) {
+        animationId = requestAnimationFrame(processFrame);
         return;
     }
 
@@ -150,95 +128,68 @@ function processFrame() {
         const displayWidth = Math.round(canvas.getBoundingClientRect().width);
         const displayHeight = Math.round(canvas.getBoundingClientRect().height);
 
+        // IMPORTANTE: Dibujar el video incluso si está pausado
         ctx.clearRect(0, 0, displayWidth, displayHeight);
-
         ctx.drawImage(video, 0, 0, displayWidth, displayHeight);
 
         const imageData = ctx.getImageData(0, 0, displayWidth, displayHeight);
-
         const processedData = chromaKey(imageData);
-
         ctx.putImageData(processedData, 0, 0);
 
     } catch (error) {
-        console.error('Error procesando frame:', error);
+        console.error('❌ Error procesando frame:', error);
     }
 
     isProcessing = false;
     animationId = requestAnimationFrame(processFrame);
 }
 
-function startVideo() {
-    if (isVideoReady) return;
-    
-    resizeCanvas();
-
-    const playPromise = video.play();
-    
-    if (playPromise !== undefined) {
-        playPromise
-            .then(() => {
-                console.log('✅ Video GUERREROS iniciado correctamente');
-                isVideoReady = true;
-                processFrame();
-            })
-            .catch(error => {
-                console.warn('⚠️ Autoplay bloqueado en video GUERREROS:', error.message);
-                // Intentar con click
-                document.body.addEventListener('click', handleplayOnClick, { once: true });
-            });
-    } else {
-        console.log('PlayPromise undefined, intentando play directo');
-        processFrame();
+// Inicializar
+function init() {
+    if (!video || !canvas) {
+        console.error('❌ Video o canvas no encontrado');
+        return;
     }
-}
 
-function handleplayOnClick() {
+    resizeCanvas();
+    
+    // Intentar reproducir
     video.muted = true;
-    video.play()
-        .then(() => {
-            console.log('✅ Video GUERREROS iniciado por click');
-            isVideoReady = true;
-            processFrame();
-        })
-        .catch(e => console.error('❌ Error en segundo intento:', e));
+    video.play().catch(e => {
+        console.warn('⚠️ Autoplay falló:', e.message);
+        console.log('⬇️ Haz click para reproducir el video');
+    });
+
+    // Iniciar procesamiento de frames independientemente de si se reproduce
+    setTimeout(() => {
+        console.log('🎬 Iniciando renderizado del canvas...');
+        processFrame();
+    }, 500);
 }
 
-// Event listeners mejorados
+// Event listeners
 if (video) {
-    video.addEventListener('loadedmetadata', () => {
-        console.log('✅ Metadatos del video cargados');
-        startVideo();
-    });
-
-    video.addEventListener('loadeddata', () => {
-        console.log('✅ Video data cargado, listo para reproducir');
-        if (!isVideoReady) startVideo();
-    });
-
-    video.addEventListener('canplay', () => {
-        console.log('✅ Video GUERREROS listo para reproducción');
-        if (!isVideoReady) startVideo();
-    });
-
-    video.addEventListener('error', (e) => {
-        console.error('❌ Error al cargar video GUERREROS:', e);
-        console.log('Ruta intentada:', video.src || 'No configurada');
-    });
+    video.addEventListener('canplay', () => console.log('✅ Video listo'));
+    video.addEventListener('play', () => console.log('▶️ Video reproduciendo'));
+    video.addEventListener('pause', () => console.log('⏸️ Video pausado'));
+    video.addEventListener('error', (e) => console.error('❌ Error video:', e));
+    
+    // Permitir click para reproducir
+    document.addEventListener('click', () => {
+        if (video.paused) {
+            video.play().catch(e => console.error('Error al reproducir:', e));
+        }
+    }, { once: true });
 
     window.addEventListener('resize', resizeCanvas);
 
-    // Iniciar carga
-    resizeCanvas();
+    // Cargar y reproducir
     video.load();
-
-    // Fallback: intenta después de 2 segundos
-    setTimeout(() => {
-        if (!isVideoReady && video.readyState >= 2) {
-            console.log('Iniciando por timeout');
-            startVideo();
-        }
-    }, 2000);
-} else {
-    console.warn('⚠️ Element videoGuerreros no encontrado');
+    
+    // Esperar a que el DOM esté completamente listo
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 }
