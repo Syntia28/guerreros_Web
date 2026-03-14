@@ -8,7 +8,7 @@ let isProcessing = false;
 // Configurar ruta del video según ambiente
 const videoPath = (() => {
     const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-    return isProduction ? '/video/GUERREROS.mp4' : 'video/GUERREROS.mp4';
+    return isProduction ? '/video/GUERREROS01.mp4' : 'video/GUERREROS01.mp4';
 })();
 
 if (video) {

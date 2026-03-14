@@ -62,14 +62,14 @@
                         </div>
                     </div>
 
-                    <!-- COLUMNA DERECHA: VIDEO CON CHROMA KEY -->
+                    <!-- COLUMNA DERECHA: VIDEO -->
                     <div class="hero-right">
                         <div class="video-wrapper">
-                            <video id="videoGuerreros" style="display: none;" autoplay muted playsinline loop preload="auto">
-                                <source src="video/GUERREROS.mp4" type="video/mp4">
+                            <video id="videoGuerreros" autoplay muted playsinline loop preload="auto" style="width: 100%; height: 100%; object-fit: cover;">
+                                <source src="video/GUERREROS01.mp4" type="video/mp4">
                                 Tu navegador no soporta videos.
                             </video>
-                            <canvas id="canvasGuerreros" class="canvas-video"></canvas>
+                            <canvas id="canvasGuerreros" style="display: none;"></canvas>
                         </div>
                     </div>
                 </div>
@@ -448,7 +448,7 @@
             </footer>
 
             <script src="./js/video-fondo.js"></script>
-            <script src="./js/chroma-key.js"></script>
+            <!-- <script src="./js/chroma-key.js"></script> -->
 </body>
 
 </html>
