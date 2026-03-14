@@ -65,7 +65,10 @@
                     <!-- COLUMNA DERECHA: VIDEO CON CHROMA KEY -->
                     <div class="hero-right">
                         <div class="video-wrapper">
-                            <video id="videoGuerreros" style="display: none;" src="video/GUERREROS.mp4" autoplay muted playsinline loop></video>
+                            <video id="videoGuerreros" style="display: none;" autoplay muted playsinline loop preload="auto">
+                                <source src="video/GUERREROS.mp4" type="video/mp4">
+                                Tu navegador no soporta videos.
+                            </video>
                             <canvas id="canvasGuerreros" class="canvas-video"></canvas>
                         </div>
                     </div>

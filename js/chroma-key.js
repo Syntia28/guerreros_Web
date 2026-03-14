@@ -4,6 +4,36 @@ const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
 let animationId = null;
 let isProcessing = false;
+let isVideoReady = false;
+
+// Obtener la URL base correcta para Render
+const getVideoPath = () => {
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    if (isProduction) {
+        return '/video/GUERREROS.mp4';
+    }
+    return 'video/GUERREROS.mp4';
+};
+
+// Verificar si existen los elementos
+if (!video || !canvas) {
+    console.error('❌ Elementos críticos no encontrados:', { video: !!video, canvas: !!canvas });
+} else {
+    console.log('✅ Elementos videoGuerreros y canvasGuerreros encontrados');
+
+    // Configurar ruta del video en el elemento source
+    const videoSource = video.querySelector('source');
+    const videoPath = getVideoPath();
+    
+    if (videoSource) {
+        videoSource.src = videoPath;
+        console.log('Ruta GUERREROS configurada en source:', videoPath);
+    } else {
+        // Fallback: establecer directamente en el video
+        video.src = videoPath;
+        console.log('Ruta GUERREROS configurada directamente en video:', videoPath);
+    }
+}
 
 const CHROMA_KEY = {
     hueMin: 60,
@@ -139,42 +169,76 @@ function processFrame() {
 }
 
 function startVideo() {
+    if (isVideoReady) return;
+    
     resizeCanvas();
 
+    const playPromise = video.play();
+    
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => {
+                console.log('✅ Video GUERREROS iniciado correctamente');
+                isVideoReady = true;
+                processFrame();
+            })
+            .catch(error => {
+                console.warn('⚠️ Autoplay bloqueado en video GUERREROS:', error.message);
+                // Intentar con click
+                document.body.addEventListener('click', handleplayOnClick, { once: true });
+            });
+    } else {
+        console.log('PlayPromise undefined, intentando play directo');
+        processFrame();
+    }
+}
+
+function handleplayOnClick() {
+    video.muted = true;
     video.play()
         .then(() => {
-            console.log('Video iniciado correctamente');
+            console.log('✅ Video GUERREROS iniciado por click');
+            isVideoReady = true;
             processFrame();
         })
-        .catch(error => {
-            console.error('Error al reproducir video:', error);
-            document.body.addEventListener('click', function initOnClick() {
-                video.play()
-                    .then(() => {
-                        console.log('Video iniciado después de click');
-                        processFrame();
-                        document.body.removeEventListener('click', initOnClick);
-                    })
-                    .catch(e => console.error('Error en segundo intento:', e));
-            }, { once: true });
-        });
+        .catch(e => console.error('❌ Error en segundo intento:', e));
 }
 
-video.addEventListener('loadeddata', () => {
-    console.log('Video cargado');
-    startVideo();
-});
+// Event listeners mejorados
+if (video) {
+    video.addEventListener('loadedmetadata', () => {
+        console.log('✅ Metadatos del video cargados');
+        startVideo();
+    });
 
-video.addEventListener('canplay', () => {
-    console.log('Video puede reproducirse');
-});
+    video.addEventListener('loadeddata', () => {
+        console.log('✅ Video data cargado, listo para reproducir');
+        if (!isVideoReady) startVideo();
+    });
 
-window.addEventListener('resize', resizeCanvas);
+    video.addEventListener('canplay', () => {
+        console.log('✅ Video GUERREROS listo para reproducción');
+        if (!isVideoReady) startVideo();
+    });
 
-resizeCanvas();
+    video.addEventListener('error', (e) => {
+        console.error('❌ Error al cargar video GUERREROS:', e);
+        console.log('Ruta intentada:', video.src || 'No configurada');
+    });
 
-if (video.readyState >= 2) {
-    startVideo();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Iniciar carga
+    resizeCanvas();
+    video.load();
+
+    // Fallback: intenta después de 2 segundos
+    setTimeout(() => {
+        if (!isVideoReady && video.readyState >= 2) {
+            console.log('Iniciando por timeout');
+            startVideo();
+        }
+    }, 2000);
+} else {
+    console.warn('⚠️ Element videoGuerreros no encontrado');
 }
-
-video.load();
